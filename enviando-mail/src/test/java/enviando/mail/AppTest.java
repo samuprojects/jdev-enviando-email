@@ -2,9 +2,14 @@ package enviando.mail;
 
 import java.util.Properties;
 
+import javax.mail.Address;
 import javax.mail.Authenticator;
+import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * Unit test for simple App.
@@ -34,6 +39,17 @@ public class AppTest {
 				return new PasswordAuthentication(userName, senha);
 			}
 		});
+		
+		Address[] toUser = InternetAddress.parse("informar@emailcliente.com");
+		
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(userName)); // Quem está enviando
+		message.setRecipients(Message.RecipientType.TO, toUser); // Email destino
+		message.setSubject("Chegou email de teste Java"); // Assunto do email
+		message.setText("Olá programador, funcionou o teste de envio do email");
+		
+		Transport.send(message);
+		
 		
 		} catch (Exception e){
 			e.printStackTrace();
