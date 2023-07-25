@@ -25,6 +25,8 @@ public class AppTest {
 		
 		// Observar configurações do smtp do email para testar sem problemas de bloqueio
 		Properties properties= new Properties();
+		
+		properties.put("mail.smtp.ssl.trust", "*"); // novo ajuste para validação, o asterico é para autorizar tudo
 		properties.put("mail.smtp.auth", "true"); // Autorização
 		properties.put("mail.smtp.starttls", "true"); // Autenticação
 		properties.put("mail.smtp.host", "smtp.gmail.com"); // Servidor Gmail
@@ -43,13 +45,21 @@ public class AppTest {
 		Address[] toUser = InternetAddress.parse("informar@emailcliente.com");
 		
 		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(userName)); // Quem está enviando
+		message.setFrom(new InternetAddress(userName, "JavaMailJDEV")); // Quem está enviando, incluído nome da empresa ou pessoa
 		message.setRecipients(Message.RecipientType.TO, toUser); // Email destino
 		message.setSubject("Chegou email de teste Java"); // Assunto do email
 		message.setText("Olá programador, funcionou o teste de envio do email");
 		
 		Transport.send(message);
 		
+		/*
+		 * Caso o email não esteja enviando colocar
+		 * um tempo de espera para encerrar o junit
+		 * esse procedimento é usado somente nesse cenário de testes
+		 * para isso descomentar a linha abaixo
+		 * */
+		
+		//Thread.sleep(5000);
 		
 		} catch (Exception e){
 			e.printStackTrace();
