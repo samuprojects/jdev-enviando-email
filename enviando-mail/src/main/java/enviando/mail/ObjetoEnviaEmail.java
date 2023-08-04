@@ -32,7 +32,7 @@ public class ObjetoEnviaEmail {
 
 
 
-	public void enviarEmail() throws Exception {
+	public void enviarEmail(boolean envioHtml) throws Exception {
 
 		// Observar configurações do smtp do email para testar sem problemas de bloqueio
 		Properties properties = new Properties();
@@ -60,8 +60,13 @@ public class ObjetoEnviaEmail {
 																		// ou pessoa
 		message.setRecipients(Message.RecipientType.TO, toUser); // Email destino
 		message.setSubject(assuntoEmail); // Assunto do email
+		
+		if (envioHtml) {
+			message.setContent(textoEmail, "text/html; charset=utf-8");
+		} else {
 		message.setText(textoEmail);
-
+		}
+		
 		Transport.send(message);
 
 	}
